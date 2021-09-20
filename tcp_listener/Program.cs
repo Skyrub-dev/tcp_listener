@@ -12,30 +12,41 @@ namespace tcp_listener
     {
         static void Main(string[] args)
         {
+            Console.Write(@"
+  _______              _       _______ _____ _____    _ _     _                       
+ |__   __|            ( )     |__   __/ ____|  __ \  | (_)   | |                      
+    | | ___  _ __ ___ |/ ___     | | | |    | |__) | | |_ ___| |_ ___ _ __   ___ _ __ 
+    | |/ _ \| '_ ` _ \  / __|    | | | |    |  ___/  | | / __| __/ _ \ '_ \ / _ \ '__|
+    | | (_) | | | | | | \__ \    | | | |____| |      | | \__ \ ||  __/ | | |  __/ |   
+    |_|\___/|_| |_| |_| |___/    |_|  \_____|_|      |_|_|___/\__\___|_| |_|\___|_|   
+                                                                                      
+                                                                                      ");
             tcp();
         }
         static void tcp()
         {
-            string temp = "192.XXX.X.X";
             //https://docs.microsoft.com/en-us/dotnet/api/system.net.ipaddress.parse?redirectedfrom=MSDN&view=net-5.0#System_Net_IPAddress_Parse_System_String_
             //https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.tcplistener.-ctor?view=net-5.0#System_Net_Sockets_TcpListener__ctor_System_Net_IPAddress_System_Int32_
-            Console.WriteLine("Enter the port you want to start the process on...");
+            Console.WriteLine("\nEnter the port you want to start the process on...");
             int portno = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter the IP address you want to listen for (local address)...\n");
-            //string localAddr = Console.ReadLine();
+            
+            Console.WriteLine("Enter the IPv4 address you want to listen for (local address)...");
+            string iplocal = Console.ReadLine();
+            
             Console.WriteLine("Is this okay? y/n");
             string conf = Console.ReadLine();
-            Console.WriteLine("IP Address:\n" + temp);
+            
+            Console.WriteLine("\nIP Address:\n" + iplocal);
             Console.WriteLine("Port:\n" + portno);
+            
             if (conf == "y")
             {
                 TcpListener server = null;
                 try
                 {
-                    //Int32 port = Console.ReadLine();
-                    // Set the TcpListener on port 13000.
+                    //initialise tcp on entered port
                     Int32 port = portno;
-                    IPAddress localAddr = IPAddress.Parse("192.168.1.13");
+                    IPAddress localAddr = IPAddress.Parse(iplocal);
 
                     // TcpListener server = new TcpListener(port);
                     server = new TcpListener(localAddr, port);
@@ -87,7 +98,13 @@ namespace tcp_listener
                 }
                 catch (SocketException e)
                 {
-                    Console.WriteLine("SocketException: {0}", e);
+                    Console.WriteLine("\nERROR!\n");
+                    Console.WriteLine(" SocketException: {0}", e);
+                }
+                catch (Exception ex)
+                {
+                    //pointless?
+                    Console.WriteLine("exception: {0}", ex);
                 }
                 finally
                 {
