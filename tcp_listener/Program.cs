@@ -17,7 +17,6 @@ namespace tcp_listener
         static void tcp()
         {
             string temp = "192.XXX.X.X";
-            //string conf = "";
             //https://docs.microsoft.com/en-us/dotnet/api/system.net.ipaddress.parse?redirectedfrom=MSDN&view=net-5.0#System_Net_IPAddress_Parse_System_String_
             //https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.tcplistener.-ctor?view=net-5.0#System_Net_Sockets_TcpListener__ctor_System_Net_IPAddress_System_Int32_
             Console.WriteLine("Enter the port you want to start the process on...");
