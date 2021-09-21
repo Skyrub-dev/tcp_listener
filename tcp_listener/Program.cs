@@ -94,7 +94,7 @@ namespace tcp_listener
                                 p.StartInfo.RedirectStandardOutput = true;
                                 p.StartInfo.RedirectStandardInput = true;
                                 p.StartInfo.RedirectStandardError = true;
-                                p.OutputDataReceived += new DataReceivedEventHandler(CmdOutputDataHandler);
+                                p.OutputDataReceived += new DataReceivedEventHandler(output);
                                 p.Start();
                                 p.BeginOutputReadLine();
 
@@ -155,7 +155,7 @@ namespace tcp_listener
             }
         }
 
-        private static void CmdOutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        private static void output(object sendingProcess, DataReceivedEventArgs outLine)
         {
             StringBuilder strOutput = new StringBuilder();
 
