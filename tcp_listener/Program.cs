@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
+//LOWDOWN:
+//- Need to accept input on listener side
+//- Maybe find a way to enter a command for the shell to execute once connected??
+//- Also find a way to code a payload for netcat eg: nc 192.xxx.x.x 0000 - maybe use bash command along side?
+
 namespace tcp_listener
 {
     class Program
@@ -26,6 +31,7 @@ namespace tcp_listener
                                                                                       
                                                                                       ");
             //font - big
+            //script payload command to connect
             tcp();
         }
         static void tcp()
@@ -80,8 +86,7 @@ namespace tcp_listener
 
                         int i;
                         //for reference https://www.puckiestyle.nl/c-simple-reverse-shell/
-                        //test
-                        while (client.Connected)
+                        /*while (client.Connected)
                         {
                             using (StreamReader rdr = new StreamReader(stream))
                             {
@@ -108,8 +113,9 @@ namespace tcp_listener
                                     strInput.Remove(0, strInput.Length);
                                 }
                             }
-                        }
+                        }*/
                         // Loop to receive all the data sent by the client.
+                        
                         while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             // Translate data bytes to a ASCII string.
@@ -117,9 +123,11 @@ namespace tcp_listener
                             Console.WriteLine(data);
 
                             // Process the data sent by the client.
-                            data = data.ToUpper();
+                            //data = data.ToUpper();
 
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
+
+                            //data = Console.ReadLine();
 
                             // Send back a response.
                             stream.Write(msg, 0, msg.Length);
