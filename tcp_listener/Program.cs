@@ -79,6 +79,8 @@ namespace tcp_listener
                         NetworkStream stream = client.GetStream();
 
                         int i;
+                        //for reference https://www.puckiestyle.nl/c-simple-reverse-shell/
+                        //test
                         while (client.Connected)
                         {
                             using (StreamReader rdr = new StreamReader(stream))
