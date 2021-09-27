@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
+// ** FURTHER PROGRESS HAS BEEN MADE IN THE OTHER BRANCHES **
+
 //CHECK TEST BRANCH FOR MORE BUILD WILL INTEGRATE WITH THIS WHEN DONE
 //CHECK SECOND NEW BRANCH TOO
 
@@ -52,33 +54,24 @@ namespace tcp_listener
                 TcpListener server = null;
                 try
                 {
-                    //initialise tcp on entered port
+                    //init
                     Int32 port = portno;
                     IPAddress localAddr = IPAddress.Parse(iplocal);
-
-                    // TcpListener server = new TcpListener(port);
                     server = new TcpListener(localAddr, port);
-
-                    // Start listening for client requests.
                     server.Start();
 
-                    // Buffer for reading data
                     Byte[] bytes = new Byte[256];
                     String data = null;
 
-                    // Enter the listening loop.
                     while (true)
                     {
                         Console.Write("\n\nWaiting for a connection on " + portno);
 
-                        // Perform a blocking call to accept requests.
-                        // You could also use server.AcceptSocket() here.
                         TcpClient client = server.AcceptTcpClient();
                         Console.WriteLine("\nConnected!");
 
                         data = null;
 
-                        // Get a stream object for reading and writing
                         NetworkStream stream = client.GetStream();
 
                         int i;
